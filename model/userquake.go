@@ -1,7 +1,6 @@
 package model
 
 import (
-	"log"
 	"sort"
 	"time"
 
@@ -40,8 +39,6 @@ type SortableArea struct {
 }
 
 func ToUserquake(data primitive.M) (*Userquake, error) {
-	log.Printf("ToUserquake: %v", data)
-
 	var uq UserquakeRecord
 	bytes, _ := bson.Marshal(data)
 	bson.Unmarshal(bytes, &uq)

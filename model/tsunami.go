@@ -1,7 +1,6 @@
 package model
 
 import (
-	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -63,8 +62,6 @@ type MaxHeight struct {
 }
 
 func ToTsunami(data primitive.M) (*Tsunami, error) {
-	log.Printf("ToTsunami: %v", data)
-
 	var t TsunamiRecord
 	bytes, _ := bson.Marshal(data)
 	bson.Unmarshal(bytes, &t)

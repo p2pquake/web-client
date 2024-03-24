@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"log"
 	"regexp"
 	"sort"
 	"strings"
@@ -74,8 +73,6 @@ type Hypocenter struct {
 }
 
 func ToEarthquake(data primitive.M) (*Earthquake, error) {
-	log.Printf("ToEarthquake: %v", data)
-
 	var eq EarthquakeRecord
 	bytes, _ := bson.Marshal(data)
 	bson.Unmarshal(bytes, &eq)

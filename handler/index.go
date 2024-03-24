@@ -13,10 +13,10 @@ import (
 )
 
 func (s *Service) IndexHandler(w http.ResponseWriter, r *http.Request) {
-	twoDaysAgo := time.Now().Add(time.Hour * -48).Format("2006/01/02 15:04:05")
+	threeDaysAgo := time.Now().Add(time.Hour * -72).Format("2006/01/02 15:04:05")
 
 	// 地震情報・津波予報・緊急地震速報（警報）
-	jmaItems, err := s.findJmas(twoDaysAgo)
+	jmaItems, err := s.findJmas(threeDaysAgo)
 	if err != nil {
 		log.Printf("Render error: %v\n", err)
 		ResponseError(w, http.StatusInternalServerError, err.Error())
@@ -24,7 +24,7 @@ func (s *Service) IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 地震感知情報
-	userquakeItems, err := s.findUserquakes(twoDaysAgo)
+	userquakeItems, err := s.findUserquakes(threeDaysAgo)
 	if err != nil {
 		log.Printf("Render error: %v\n", err)
 		ResponseError(w, http.StatusInternalServerError, err.Error())

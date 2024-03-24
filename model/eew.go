@@ -58,6 +58,7 @@ func toAreas(areas []EEWArea) []string {
 	var result []string
 	for _, area := range areas {
 		if _, ok := byPref[area.Pref]; !ok {
+			byPref[area.Pref] = true
 			result = append(result, area.Pref)
 		}
 	}

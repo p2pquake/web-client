@@ -12,13 +12,13 @@ a {
 
 body {
     background-color: #fafafa;
-    background-image: url(/static/images/header.svg);
+    background-image: url(./images/header.svg);
     background-repeat: repeat-x;
 }
 
 #header {
     background-color: #fafafa;
-    background-image: url(/static/images/header.svg);
+    background-image: url(./images/header.svg);
     background-repeat: repeat-x;
 }
 

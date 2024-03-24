@@ -15,16 +15,16 @@
     <div class="text-sm">{{ .ShortTime }}</div>
   </div>
   <div class="p-2">
-    <a href="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big">
+    <a href="https://cdn.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big">
       {{ if or (eq .IssueType "ScalePrompt") (eq .IssueType "Destination") }}
       <img
-        src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
+        src="https://cdn.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
         class="w-full min-h-32 max-h-64 object-contain"
         loading="lazy"
       />
       {{ else }}
       <img
-        src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
+        src="https://cdn.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
         class="w-full min-h-32 max-h-64 object-contain"
         loading="lazy"
       />

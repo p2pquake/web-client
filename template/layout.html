@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
+    <title>P2P地震情報 Web版: 地震情報やユーザーの「揺れた！」をWebで</title>
     <meta http-equiv="refresh" content="10" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="./static/main.css" rel="stylesheet" />
+    <link rel="icon" href="https://www.p2pquake.net/images/favicon.png" />
   </head>
-  <body class="">
-    <div id="header" class="p-2">
-      <h3 class="text-xl font-bold">P2P地震情報</h3>
+  <body>
+    <div id="header" class="px-4 py-2 flex justify-between items-center">
+      <h3 class="text-xl font-bold"><a href="https://www.p2pquake.net/">P2P地震情報</a> Web版</h3>
+      <div class="flex flex-col opacity-50">
+        <span class="text-xs">Web版以外はこちら：</span>
+        <div class="flex gap-4 [&_img]:h-4 [&_img]:w-4 items-center text-xs">
+          <a href="https://itunes.apple.com/jp/app/p2p%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1/id1457443047?mt=8"
+            ><img src="https://www.p2pquake.net/images/apple.svg"
+          /></a>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.p2pquake.mobile&hl=ja&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+            ><img src="https://www.p2pquake.net/images/google-play.svg"
+          /></a>
+          <a href="https://www.p2pquake.net/windows"><img src="https://www.p2pquake.net/images/windows.svg" /></a>
+          <a href="https://twitter.com/p2pquake"><img src="./static/images/x-logo.svg" /></a>
+        </div>
+      </div>
     </div>
     <div id="content" class="p-4 max-w-screen-lg mx-auto">{{template "content" .}}</div>
     <div id="footer"></div>

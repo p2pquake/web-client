@@ -1,0 +1,31 @@
+<div class="border rounded">
+  <div class="px-2 py-1 bg-slate-100 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/userquake.svg" class="h-4 w-4" />
+      <span> 「揺れた！」<span class="text-xs">（地震感知情報）</span> </span>
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}</div>
+  </div>
+  <div class="p-2">
+    <a href="https://www.p2pquake.net/app/web/userquake?id={{ .ObjectID }}&suffix=_trim">
+      <img
+        src="https://www.p2pquake.net/app/web/userquake?id={{ .ObjectID }}&suffix=_trim"
+        class="w-full h-64 object-contain"
+      />
+    </a>
+  </div>
+  <div class="p-2 flex gap-2">
+    <div class="font-bold">日時</div>
+    <div>{{ .StartTime }}～{{ .EndTime }}</div>
+  </div>
+  <div class="p-2 grid grid-cols-[2rem_minmax(0,_1fr)] gap-1">
+    <div class="font-bold col-span-2">各地域の相対的な信頼度</div>
+    {{ range $_, $s := .AreaByConfidence }}
+    <div><span class="text-sm x-confidence x-confidence-{{ $s.Confidence }}">{{ $s.Confidence }}</span></div>
+    <div class="text-sm py-0.5">{{ range $i, $a := $s.Areas }} {{ if gt $i 0 }}、{{ end }}{{ $a }} {{ end }}</div>
+    {{ end }}
+    <div class="text-xs col-span-2">
+      信頼度は揺れの強さを示すものではありません。「相対的な差」「分布の拡がり」に着目してご覧ください。
+    </div>
+  </div>
+</div>

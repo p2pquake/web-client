@@ -1,7 +1,15 @@
 package renderer
 
-import "go.mongodb.org/mongo-driver/bson"
+import (
+	"github.com/p2pquake/web-client/model"
+	"go.mongodb.org/mongo-driver/bson"
+)
 
-func RenderItem(data bson.M) (string, error) {
+func RenderItem(m bson.M) (string, error) {
+	data, err := model.Convert(m)
+	if err != nil {
+		return "", err
+	}
+
 	return Render("item.html", data)
 }

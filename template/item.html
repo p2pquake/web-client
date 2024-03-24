@@ -1,16 +1,3 @@
-<div class="border rounded-lg p-2">
-  <ul>
-    <li>
-      {{ if eq .code 551 }} 地震情報 {{ else if eq .code 552 }} 津波予報 {{ else
-      if eq .code 556 }} 緊急地震速報（警報） {{ else if eq .code 9611 }}
-      地震感知情報評価結果 {{ else }} 不明なデータ {{ end }}
-    </li>
-    <li>登録日時: {{ .time }}</li>
-    <li>
-      データ:
-      <div class="overflow-y-auto h-32 border rounded p-1">
-        <code class="text-xs whitespace-pre-wrap">{{ . }}</code>
-      </div>
-    </li>
-  </ul>
-</div>
+{{ if eq .Code 551 }} {{ template "earthquake.html" . }} {{ else if eq .Code 9611 }} {{ template "userquake.html" . }}
+{{ else if eq .Code 552 }} {{ template "tsunami.html" . }} {{ else if eq .Code 556 }} {{ template "eew.html" . }} {{
+else }} 不明なデータ ({{ .Code }} / {{ .code }}) {{ end }}

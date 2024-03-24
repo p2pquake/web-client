@@ -38,6 +38,7 @@ func (s *Service) ItemHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/html")
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	w.Header().Set("Cache-Control", "no-cache")
 	w.Write([]byte(html))
 }

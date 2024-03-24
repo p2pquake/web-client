@@ -1,0 +1,89 @@
+<div class="border rounded">
+  {{ if .Cancelled }}
+  <div class="px-2 py-1 bg-green-50 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/tsunami.svg" class="h-4 w-4" />
+      津波予報 解除
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}発表</div>
+  </div>
+  {{ else }} {{ if eq .MaxGrade "MajorWarning" }}
+  <div class="px-2 py-1 bg-purple-100 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/tsunami.svg" class="h-4 w-4" />
+      大津波警報
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}発表</div>
+  </div>
+  {{ else if eq .MaxGrade "Warning" }}
+  <div class="px-2 py-1 bg-red-100 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/tsunami.svg" class="h-4 w-4" />
+      津波警報
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}発表</div>
+  </div>
+  {{ else if eq .MaxGrade "Watch" }}
+  <div class="px-2 py-1 bg-yellow-100 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/tsunami.svg" class="h-4 w-4" />
+      津波注意報
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}発表</div>
+  </div>
+  {{ else }}
+  <div class="px-2 py-1 bg-slate-100 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/tsunami.svg" class="h-4 w-4" />
+      津波予報
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}発表</div>
+  </div>
+  {{ end }}
+  <div class="p-2">
+    <a href="https://www.p2pquake.net/app/web/tsunami?id={{ .ObjectID }}&suffix=_trim_big">
+      <img
+        src="https://www.p2pquake.net/app/web/tsunami?id={{ .ObjectID }}&suffix=_trim_big"
+        class="w-full h-64 object-contain"
+      />
+    </a>
+  </div>
+  {{ end }}
+  <div class="p-2 grid grid-cols-[6rem_minmax(0,_1fr)] gap-1">
+    <div class="font-bold">発表日時</div>
+    <div>{{ .IssueTime }}</div>
+  </div>
+  {{ if .Cancelled }}
+  <div class="p-2">津波予報は解除されました。</div>
+  {{ else if not .Cancelled }}
+  <div class="p-2 grid grid-cols-[16rem_minmax(0,_1fr)] gap-1">
+    <div class="font-bold col-span-2">発表予報区</div>
+    {{ range $_, $p := .AreaByGrade }}
+    <div class="x-tsunami x-tsunami-{{ $p.Grade }} col-span-2 lg:col-span-1">
+      {{ if eq $p.Grade "MajorWarning" }}大津波警報 （3m以上）{{ else if eq $p.Grade "Warning" }}津波警報 （最大3m）{{
+      else if eq $p.Grade "Watch" }}津波注意報（最大1m）{{ else }}予報種類不明{{ end }}
+    </div>
+    <div class="col-span-2 lg:col-span-1 lg:py-2">
+      <table class="text-sm border-collapse [&_th]:px-2 [&_td]:px-2 [&_th]:sm:px-4 [&_td]:sm:px-4">
+        <thead>
+          <tr class="border-b border-gray-800">
+            <th class="sm:min-w-48">予報区</th>
+            <th class="sm:min-w-32">予想到達時刻</th>
+            <th class="sm:min-w-16">高さ</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range $i, $s := $p.Areas }}
+          <tr class="border-b border-gray-300 last:border-0">
+            <td>{{ $s.Name }}</td>
+            <td>{{ $s.ArrivalTime }}</td>
+            <td>{{ $s.MaxHeight }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+      </table>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>

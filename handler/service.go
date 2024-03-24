@@ -9,6 +9,7 @@ import (
 type Service struct {
 	Client *mongo.Client
 	Whole  *mongo.Collection
+	Jma    *mongo.Collection
 }
 
 func ResponseError(w http.ResponseWriter, code int, message string) {

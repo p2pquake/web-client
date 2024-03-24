@@ -19,3 +19,7 @@
 
 # Go workspace file
 go.work
+
+# Tailwind CSS
+node_modules/
+static/main.css

@@ -30,10 +30,20 @@ func main() {
 	}
 	defer client.Disconnect(ctx)
 
-	collection := client.Database(mongodbDatabase).Collection(mongodbCollection)
-	service := handler.Service{Client: client, Whole: collection}
+	whole := client.Database(mongodbDatabase).Collection(mongodbCollection)
+	jma := client.Database(mongodbDatabase).Collection("jma")
+	service := handler.Service{Client: client, Whole: whole, Jma: jma}
 
+	http.HandleFunc("GET /", service.IndexHandler)
 	http.HandleFunc("GET /{id}", service.ItemHandler)
+	http.Handle("GET /static/", oneDayCache(http.StripPrefix("/static/", http.FileServer(http.Dir("static")))))
 
 	http.ListenAndServe(":8080", nil)
+}
+
+func oneDayCache(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "max-age=86400")
+		next.ServeHTTP(w, r)
+	})
 }

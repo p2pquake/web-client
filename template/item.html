@@ -1,0 +1,3 @@
+{{ if eq .Code 551 }} {{ template "earthquake.html" . }} {{ else if eq .Code 9611 }} {{ template "userquake.html" . }}
+{{ else if eq .Code 552 }} {{ template "tsunami.html" . }} {{ else if eq .Code 556 }} {{ template "eew.html" . }} {{
+else }} 不明なデータ ({{ .Code }} / {{ .code }}) {{ end }}

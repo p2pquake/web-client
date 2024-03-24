@@ -1,0 +1,59 @@
+<div class="border rounded">
+  <div class="px-2 py-1 bg-slate-100 border-b border-slate-100 flex justify-between items-center">
+    <div class="flex gap-2 items-center">
+      <h3 class="flex gap-1 items-center text-lg font-bold">
+        <img src="./static/images/earthquake.svg" class="h-4 w-4" />
+        <span>
+          {{ if eq .IssueType "Destination" }}震源情報{{ else if eq .IssueType "ScalePrompt" }}震度速報{{ else if eq
+          .IssueType "Foreign" }}遠地（海外）地震情報{{ else if eq .IssueType "DetailScale" }}地震情報{{ end }}
+        </span>
+      </h3>
+      {{ if or (eq .IssueType "ScalePrompt") (eq .IssueType "DetailScale") }}
+      <span class="text-xs px-1 py-0.5 x-scale x-scale-{{ .MaxScale }}">最大震度{{ .MaxScale }}</span>
+      {{ end }}
+    </div>
+    <div class="text-sm">{{ .ShortTime }}</div>
+  </div>
+  <div class="p-2">
+    <a href="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big">
+      {{ if or (eq .IssueType "ScalePrompt") (eq .IssueType "Destination") }}
+      <img
+        src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
+        class="w-full max-h-64 object-contain"
+      />
+      {{ else }}
+      <img
+        src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim"
+        class="w-full max-h-64 object-contain"
+      />
+      {{ end }}
+    </a>
+  </div>
+  <div class="p-2 grid grid-cols-[4rem_minmax(0,_1fr)] gap-0.5 md:gap-1">
+    <div class="font-bold">日時</div>
+    <div>{{ .OccurredTime }}</div>
+    <div class="font-bold">震源</div>
+    <div>{{ if eq .IssueType "ScalePrompt" }} 調査中 {{ else }} {{ .Hypocenter }} {{ end }}</div>
+    {{ if eq .IssueType "Foreign" }}
+    <div class="font-bold">津波</div>
+    <div>日本: {{ .Tsunami }}<br />国外: {{ .ForeignTsunami }}</div>
+    {{ else }}
+    <div class="font-bold">津波</div>
+    <div>{{ if eq .IssueType "ScalePrompt" }} 調査中 {{ else }} {{ .Tsunami }} {{ end }}</div>
+    {{ end }}
+  </div>
+  {{ if or (eq .IssueType "ScalePrompt") (eq .IssueType "DetailScale") }}
+  <div class="p-2 grid grid-cols-[2rem_minmax(0,_1fr)] gap-0.5 md:gap-1">
+    <div class="font-bold col-span-2">各地の震度</div>
+    {{ if eq .IssueType "ScalePrompt" }} {{ range $_, $s := .PointsByScale }}
+    <div><span class="text-sm x-scale x-scale-{{ $s.Scale }}">{{ $s.Scale }}</span></div>
+    <div class="text-sm py-0.5">{{ $s.PointString }}</div>
+    {{ end }} {{ else }} {{ range $_, $p := .Points }}
+    <div class="text-sm font-bold col-span-2">{{ $p.Pref }}</div>
+    {{ range $_, $s := $p.Points }}
+    <div><span class="text-sm x-scale x-scale-{{ $s.Scale }}">{{ $s.Scale }}</span></div>
+    <div class="text-sm py-0.5">{{ $s.PointString }}</div>
+    {{ end }} {{ end }} {{ end }}
+  </div>
+  {{ end }}
+</div>

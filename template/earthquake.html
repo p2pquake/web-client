@@ -19,12 +19,14 @@
       {{ if or (eq .IssueType "ScalePrompt") (eq .IssueType "Destination") }}
       <img
         src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
-        class="w-full max-h-64 object-contain"
+        class="w-full min-h-32 max-h-64 object-contain"
+        loading="lazy"
       />
       {{ else }}
       <img
-        src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim"
-        class="w-full max-h-64 object-contain"
+        src="https://www.p2pquake.net/app/web/hypocenter?id={{ .ObjectID }}&suffix=_trim_big"
+        class="w-full min-h-32 max-h-64 object-contain"
+        loading="lazy"
       />
       {{ end }}
     </a>

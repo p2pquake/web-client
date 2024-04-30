@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"io"
 	"os"
+	"time"
 )
 
 func Render(templateFile string, data interface{}) (string, error) {
@@ -13,7 +14,7 @@ func Render(templateFile string, data interface{}) (string, error) {
 		return "", err
 	}
 
-	t, err := template.New("content").Parse(string(f))
+	t, err := template.New("content").Funcs(template.FuncMap{"date": func() string { return time.Now().Format("01/02 15:04:05") }, "gtag": func() string { return os.Getenv("GTM_CONTAINER_ID") }}).Parse(string(f))
 	if err != nil {
 		return "", err
 	}

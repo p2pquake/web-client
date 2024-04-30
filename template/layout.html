@@ -2,15 +2,32 @@
 <html lang="ja">
   <head>
     <title>P2P地震情報 Web版: 地震情報やユーザーの「揺れた！」をWebで</title>
-    <meta http-equiv="refresh" content="10" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="./static/main.css" rel="stylesheet" />
     <link rel="icon" href="https://www.p2pquake.net/images/favicon.png" />
+    {{ if ne gtag "" }}
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{ gtag }}');</script>
+    <!-- End Google Tag Manager -->
+    {{ end }}
   </head>
-  <body>
-    <div id="header" class="px-4 py-2 flex justify-between items-center">
-      <h3 class="text-xl font-bold"><a href="https://www.p2pquake.net/">P2P地震情報</a> Web版</h3>
-      <div class="flex flex-col opacity-50">
+  <body class="max-w-screen-lg mx-auto">
+    {{ if ne gtag "" }}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtag }}"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {{ end }}
+    <div id="header" class="px-4 py-2 sm:py-4 flex justify-between items-start max-sm:sticky max-sm:top-0">
+      <div class="leading-none">
+        <h3 class="text-xl md:text-2xl font-bold"><a href="https://www.p2pquake.net/">P2P地震情報</a> Web版</h3>
+        <span class="text-xs">{{ date }}現在</span>
+      </div>
+      <div class="opacity-50">
         <span class="text-xs">Web版以外はこちら：</span>
         <div class="flex gap-4 [&_img]:h-4 [&_img]:w-4 items-center text-xs">
           <a href="https://itunes.apple.com/jp/app/p2p%E5%9C%B0%E9%9C%87%E6%83%85%E5%A0%B1/id1457443047?mt=8"
@@ -25,7 +42,9 @@
         </div>
       </div>
     </div>
-    <div id="content" class="p-4 max-w-screen-lg mx-auto">{{template "content" .}}</div>
-    <div id="footer"></div>
+    <div id="content" class="p-4">{{template "content" .}}</div>
+    <div id="footer" class="p-4 text-sm">
+      <a href="https://www.p2pquake.net/privacy_policy/">プライバシーポリシー</a>
+    </div>
   </body>
 </html>

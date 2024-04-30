@@ -1,8 +1,22 @@
 <div class="border rounded bg-white">
+  {{ if .Cancelled }}
+  <div class="px-2 py-1 bg-green-50 border-b border-slate-100 flex justify-between items-center">
+    <h3 class="flex gap-1 items-center text-lg font-bold">
+      <img src="./static/images/eew.svg" class="h-4 w-4" />
+      <span>緊急地震速報（警報） 取消</span>
+    </h3>
+    <div class="text-sm">{{ .ShortTime }}</div>
+  </div>
+  <div class="p-2 grid grid-cols-4">
+    <div class="font-bold">発表</div>
+    <div class="col-span-3">{{ .IssueTime }}</div>
+  </div>
+  <div class="p-2">緊急地震速報は取り消されました。</div>
+  {{ else }}
   <div class="px-2 py-1 bg-red-100 border-b border-slate-100 flex justify-between items-center">
     <h3 class="flex gap-1 items-center text-lg font-bold">
       <img src="./static/images/eew.svg" class="h-4 w-4" />
-      <span>緊急地震速報（警報）</span>
+      <span>緊急地震速報（警報）{{ if gt .Serial 1 }} 続報{{ end }} </span>
     </h3>
     <div class="text-sm">{{ .ShortTime }}</div>
   </div>
@@ -25,4 +39,5 @@
     <div class="x-eew col-span-2 lg:col-span-1">強い揺れが予想される地域</div>
     <div class="col-span-2 lg:col-span-1">{{ range $i, $s := .Areas }} {{ $s }} {{ end }}</div>
   </div>
+  {{ end }}
 </div>

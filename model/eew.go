@@ -1,6 +1,8 @@
 package model
 
 import (
+	"strconv"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -8,7 +10,7 @@ import (
 type EEW struct {
 	Code       int
 	ObjectID   string
-	Serial     string
+	Serial     int
 	IssueTime  string
 	ShortTime  string
 	Cancelled  bool
@@ -41,10 +43,15 @@ func ToEEW(data primitive.M) (*EEW, error) {
 	bytes, _ := bson.Marshal(data)
 	bson.Unmarshal(bytes, &eew)
 
+	serial, err := strconv.Atoi(eew.Issue.Serial)
+	if err != nil {
+		serial = -1
+	}
+
 	return &EEW{
 		ObjectID:   eew.ID.Hex(),
 		Code:       556,
-		Serial:     eew.Issue.Serial,
+		Serial:     serial,
 		IssueTime:  formatS(eew.Issue.Time),
 		ShortTime:  formatShort(eew.Issue.Time),
 		Cancelled:  eew.Cancelled,

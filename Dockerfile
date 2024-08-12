@@ -15,6 +15,10 @@ RUN CGO_ENABLED=0 go build . && ls -l /go/src
 
 FROM alpine:latest
 WORKDIR /go
+RUN apk --update add tzdata && \
+    cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    apk del tzdata && \
+    rm -rf /var/cache/apk/*
 COPY --from=builder /go/src/web-client .
 COPY --from=builder /go/src/static ./static
 COPY --from=builder /go/src/template ./template

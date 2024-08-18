@@ -12,19 +12,21 @@ import (
 )
 
 type Earthquake struct {
-	Raw            string
-	Code           int
-	ObjectID       string
-	MaxScale       string
-	IssueTime      string
-	IssueType      string
-	OccurredTime   string
-	ShortTime      string
-	Hypocenter     string
-	Tsunami        string
-	ForeignTsunami string
-	Points         []PointsByPref
-	PointsByScale  []PointsByScale
+	Raw              string
+	Code             int
+	ObjectID         string
+	MaxScale         string
+	IssueTime        string
+	IssueType        string
+	OccurredTime     string
+	ShortTime        string
+	Hypocenter       string
+	IsEruption       bool
+	FreeFormComments []string
+	Tsunami          string
+	ForeignTsunami   string
+	Points           []PointsByPref
+	PointsByScale    []PointsByScale
 }
 
 type PointsByPref struct {
@@ -54,7 +56,10 @@ type EarthquakeRecord struct {
 		Type string `bson:"type"`
 		Time string `bson:"time"`
 	} `bson:"issue"`
-	Points []Point `bson:"points"`
+	Points   []Point `bson:"points"`
+	Comments struct {
+		FreeFormComment string `bson:"freeFormComment"`
+	} `bson:"comments"`
 }
 
 type Point struct {
@@ -157,20 +162,28 @@ func ToEarthquake(data primitive.M) (*Earthquake, error) {
 		})
 	}
 
+	isEruption := strings.Contains(eq.Comments.FreeFormComment, "大規模な噴火")
+	freeFormComments := []string{}
+	if eq.Comments.FreeFormComment != "" {
+		freeFormComments = strings.Split(eq.Comments.FreeFormComment, "\n")
+	}
+
 	return &Earthquake{
-		Raw:            fmt.Sprintf("%v\n", eq),
-		ObjectID:       eq.ID.Hex(),
-		Code:           551,
-		MaxScale:       scale(eq.Earthquake.MaxScale),
-		IssueType:      eq.Issue.Type,
-		IssueTime:      format(eq.Issue.Time),
-		OccurredTime:   format(eq.Earthquake.Time),
-		ShortTime:      formatShort(eq.Earthquake.Time),
-		Tsunami:        tsunami(eq.Earthquake.DomesticTsunami),
-		ForeignTsunami: tsunami(eq.Earthquake.ForeignTsunami),
-		Hypocenter:     hypocenter(eq.Earthquake.Hypocenter),
-		Points:         pointsByPref,
-		PointsByScale:  pointsByScale,
+		Raw:              fmt.Sprintf("%v\n", eq),
+		ObjectID:         eq.ID.Hex(),
+		Code:             551,
+		MaxScale:         scale(eq.Earthquake.MaxScale),
+		IssueType:        eq.Issue.Type,
+		IssueTime:        format(eq.Issue.Time),
+		OccurredTime:     format(eq.Earthquake.Time),
+		ShortTime:        formatShort(eq.Earthquake.Time),
+		Tsunami:          tsunami(eq.Earthquake.DomesticTsunami),
+		ForeignTsunami:   tsunami(eq.Earthquake.ForeignTsunami),
+		Hypocenter:       hypocenter(eq.Earthquake.Hypocenter, isEruption),
+		IsEruption:       isEruption,
+		FreeFormComments: freeFormComments,
+		Points:           pointsByPref,
+		PointsByScale:    pointsByScale,
 	}, nil
 }
 
@@ -248,9 +261,13 @@ func tsunami(t string) string {
 	return "津波有無は不明"
 }
 
-func hypocenter(hypocenter Hypocenter) string {
+func hypocenter(hypocenter Hypocenter, isEruption bool) string {
 	if hypocenter.Name == "" {
 		return "不明"
+	}
+
+	if isEruption {
+		return hypocenter.Name
 	}
 
 	return fmt.Sprintf("%s (%s) M%.1f", hypocenter.Name, depth(hypocenter.Depth), hypocenter.Magnitude)

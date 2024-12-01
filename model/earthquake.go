@@ -82,6 +82,13 @@ func ToEarthquake(data primitive.M) (*Earthquake, error) {
 	bytes, _ := bson.Marshal(data)
 	bson.Unmarshal(bytes, &eq)
 
+	// 「震度5弱以上と推定」の優先度を下げる（震度5弱より低い）
+	for i := 0; i < len(eq.Points); i++ {
+		if eq.Points[i].Scale == 46 {
+			eq.Points[i].Scale = 44
+		}
+	}
+
 	r := regexp.MustCompile("^((?:余市町|田村市|玉村町|東村山市|武蔵村山市|羽村市|十日町市|上市町|大町市|名古屋中村区|大阪堺市.+?区|下市町|大村市|野々市市|四日市市|廿日市市|大町町|.+?[市区町村]))")
 	sort.SliceStable(eq.Points, func(i, j int) bool { return eq.Points[i].Scale > eq.Points[j].Scale })
 	for i, v := range eq.Points {
@@ -199,7 +206,9 @@ func scale(s int) string {
 		return "4"
 	case 45:
 		return "5弱"
-	case 46:
+	case 44:
+		return "5弱以上と推定"
+	case 46: // 46 -> 44 に書き換えているのでおそらく不要。
 		return "5弱以上と推定"
 	case 50:
 		return "5強"

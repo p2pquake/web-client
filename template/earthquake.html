@@ -72,10 +72,19 @@
     {{ end }} {{ else }} {{ range $_, $p := .Points }}
     <div class="text-sm font-bold col-span-2">{{ $p.Pref }}</div>
     {{ range $_, $s := $p.Points }}
-    <div>
-      <span class="text-sm x-scale x-scale-{{ $s.Scale }}">{{ $s.Scale }}</span>
-    </div>
-    <div class="text-sm py-0.5">{{ $s.PointString }}</div>
+      {{ if eq $s.Scale "5弱以上と推定" }}
+        <div class="col-span-2 flex gap-2">
+          <div>
+            <span class="text-sm x-scale x-scale-{{ $s.Scale }}">{{ $s.Scale }}</span>
+          </div>
+          <div class="text-sm py-0.5">{{ $s.PointString }}</div>
+        </div>
+      {{ else }}
+        <div>
+          <span class="text-sm x-scale x-scale-{{ $s.Scale }}">{{ $s.Scale }}</span>
+        </div>
+        <div class="text-sm py-0.5">{{ $s.PointString }}</div>
+      {{ end }}
     {{ end }} {{ end }} {{ end }}
   </div>
   {{ end }} {{ if gt (len .FreeFormComments) 0}}

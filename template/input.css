@@ -48,6 +48,12 @@ body {
     text-shadow: var(--shadow);
 }
 
+.x-scale-5弱以上と推定 {
+    @apply text-white;
+    background-color: #80C000;
+    text-shadow: var(--shadow);
+}
+
 .x-scale-5強 {
     @apply text-white;
     background-color: #F08000;

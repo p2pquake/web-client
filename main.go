@@ -36,6 +36,7 @@ func main() {
 
 	http.HandleFunc("GET /", service.IndexHandler)
 	http.HandleFunc("GET /{id}", service.ItemHandler)
+	http.HandleFunc("GET /api/timeseries/{id}", service.TimeseriesHandler)
 	http.Handle("GET /static/", oneDayCache(http.StripPrefix("/static/", http.FileServer(http.Dir("static")))))
 
 	http.ListenAndServe(":8080", nil)

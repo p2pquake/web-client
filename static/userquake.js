@@ -21,7 +21,7 @@ function initUserquakeTimeline(objectId) {
   let isPreloading = false;
   let hasPreloaded = false;
 
-  fetch(`/api/timeseries/${objectId}`)
+  fetch(`./api/timeseries/${objectId}`)
     .then(response => response.json())
     .then(data => {
       timeseriesData = data;
